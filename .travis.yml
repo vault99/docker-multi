@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t vault99/docker-multi-client-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true vault99/docker-multi-client-test npm test-- ----coverage
+
+after_success:
+  - docker build -t vault99/docker-multi-client -f ./client
+  - docker build -t vault99/docker-multi-nginx -f ./nginx
+  - docker build -t vault99/docker-multi-server -f ./server
+  - docker build -t vault99/docker-multi-worker -f ./worker
+  # login docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # push image to docker
+  - docker push vault99/docker-multi-client
+  - docker push vault99/docker-multi-nginx
+  - docker push vault99/docker-multi-server
+  - docker push vault99/docker-multi-worker
