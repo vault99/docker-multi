@@ -6,7 +6,7 @@ before_install:
   - docker build -t vault99/docker-multi-client-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true vault99/docker-multi-client-test npm test-- ----coverage
+  - docker run -e CI=true vault99/docker-multi-client-test npm test -- --coverage
 
 after_success:
   - docker build -t vault99/docker-multi-client -f ./client
