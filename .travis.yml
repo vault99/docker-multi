@@ -20,3 +20,15 @@ after_success:
   - docker push vault99/docker-multi-nginx
   - docker push vault99/docker-multi-server
   - docker push vault99/docker-multi-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'ap-southeast-1'
+  app: 'docker-multi'
+  env: 'Dockermulti-env'
+  bucket_name: 'elasticbeanstalk-ap-southeast-1-833745433413'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY_DOCKERMULTI
+  secret_access_key: $AWS_SECRET_KEY_DOCKERMULTI
